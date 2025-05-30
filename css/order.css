@@ -1,0 +1,233 @@
+/*
+ * Order Page Specific Styles
+ * This CSS file contains styling for the order form,
+ * product preview section, and responsive adjustments
+ * for the layout on different screen sizes.
+ */
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Introduction Section - matches the order-layout background */
+.intro-section {
+  background-color: aliceblue;
+  padding: 30px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.intro-section h2,
+.intro-section p {
+  color: #333;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-section h2 {
+    margin-bottom: 10px;
+}
+
+.order-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: aliceblue;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+#orderForm {
+  background-color: #fff;
+  color: #333;
+  padding: 25px;
+  border-radius: 8px;
+  max-width: 500px;
+  flex-basis: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  #orderForm {
+    flex-basis: 45%;
+    max-width: none;
+  }
+}
+
+#orderForm h3 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  text-align: center;
+}
+
+#orderForm label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+#orderForm input[type="text"],
+#orderForm input[type="tel"],
+#orderForm input[type="number"],
+#orderForm select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
+}
+
+#orderForm input[type="text"]:focus,
+#orderForm input[type="tel"]:focus,
+#orderForm input[type="number"]:focus,
+#orderForm select:focus {
+  border-color: #1e3a8a;
+  outline: none;
+}
+
+#request {
+  width: 100%;
+}
+
+#orderForm input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+#orderForm button[type="submit"] {
+  margin-top: 25px;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+}
+
+#orderForm button[type="submit"]:hover {
+  background-color: #153070;
+}
+
+#toppingsSection,
+#pizzaOptions {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 1.5rem;
+  background-color: #fcfcfc;
+}
+
+#toppingsSection legend,
+#pizzaOptions legend {
+  font-weight: 700;
+  color: #1e3a8a;
+  padding: 0 8px;
+  margin-left: 5px;
+}
+
+#burgerToppings,
+#pizzaToppingsList {
+  margin-left: 1.5rem;
+  margin-top: 10px;
+}
+
+#burgerToppings label,
+#pizzaToppingsList label {
+    margin-top: 5px;
+}
+
+.alert-message {
+  background-color: #fff3cd;
+  padding: 10px 15px;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+.product-preview {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #fff;
+  text-align: center;
+  display: none; /* Hidden by default; JavaScript will make it active */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* This media query can be added IF you want the preview to show by default on large screens
+   EVEN BEFORE an item is selected. If it should *only* show via JS, remove this. */
+/*
+@media (min-width: 900px) {
+  .product-preview {
+    display: block;
+    flex-basis: 45%;
+  }
+}
+*/
+
+.product-preview.active {
+  display: block; /* Activated by JavaScript when an item is selected */
+}
+
+.preview-item {
+  display: none;
+}
+
+.preview-item.active {
+  display: block;
+}
+
+.product-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 1.2rem;
+}
+.preview-item p {
+  color: #555;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .order-layout {
+    padding: 1rem;
+  }
+
+  #orderForm {
+    padding: 15px 20px;
+  }
+
+  #orderForm button[type="submit"] {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+
+  .product-preview {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}

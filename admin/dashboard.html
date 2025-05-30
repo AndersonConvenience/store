@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Anderson Convenience Store</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../pics/favicon.png">
+  <meta name="description" content="Admin Dashboard to manage store operations." />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module" src="../js/feed.js"></script>
+   <script type="module" src="../js/dashboard.js"></script>
+
+ 
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+      <button class="active" data-section="new-order"><i class="fas fa-utensils"></i> New Order</button>
+      <button data-section="feed-price"><i class="fas fa-tractor"></i> Feed Price</button>
+      <button data-section="fuel-price"><i class="fas fa-gas-pump"></i> Fuel Price</button>
+      <button data-section="deli-price"><i class="fas fa-hamburger"></i> Deli Price</button>
+      
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboard">
+      <div class="dashboard-header">
+        <button id="logoutBtn"> <i class="fa-solid fa-power-off"></i>Logout</button>
+        <h1><i class="fas fa-cogs"></i> Admin Dashboard</h1>
+        <h2>Hello, <span id="userEmail"></span><h2>
+        <p>Manage store operations securely</p>
+      </div>      
+
+      <!-- New Order Section -->
+      <div class="dashboard-section active" id="new-order">
+        <audio id="notificationSound" src="../pics/notification.mp3" preload="auto"></audio>
+        <h2><i class="fas fa-utensils"></i> New Order</h2>
+        <div class="form-group">
+          <label>Food Order</label>
+          <h1>All Orders</h1>
+          <div id="ordersContainer">Loading orders...</div>
+        </div>
+       
+      </div>
+
+     
+        <!-- Feed Price Section -->
+          <div class="dashboard-section" id="feed-price">
+                    <h2>Add New Feed Item</h2>
+                    <form id="addFeedForm">
+                      <label for="newCategory">Category:</label><br/>
+                        <select id="newCategory" name="newCategory" required>
+                          <option value="" disabled selected>Select a category</option>
+                          <option value="Poultry Feed">Poultry Feed</option>
+                          <option value="Cattle Feed">Cattle Feed</option>
+                          <option value="Minerals">Minerals</option>
+                          <option value="Pet Feed">Pet Feed</option>
+                        </select><br/><br/>
+                      <label for="newQuantity">Quantity:</label><br/>
+                      <input type="number" id="newQuantity" name="newQuantity" min="0" placeholder="50 Lb" required /><br/><br/>
+                      
+                      <label for="newProductName">Product Name:</label><br/>
+                      <input type="text" id="newProductName" name="newProductName" required /><br/><br/>
+                      
+                      <label for="newProductPrice">Price:</label><br/>
+                      <input type="text" id="newProductPrice" name="newProductPrice" placeholder="$0.00" required /><br/><br/>
+                      
+                      <button type="submit">Add Item</button>
+                    </form>
+                    <p id="addFeedMessage" style="display:none; margin-top: 10px;"></p>
+
+  
+            <h2><i class="fas fa-tractor"></i> Change Feed Price</h2>
+              <div class="form-group" style="position: relative;">
+                <label for="productName">Feed Product Name</label>
+                <input type="text" id="productName" placeholder="e.g., Hen Scratch" autocomplete="off" />
+                <div id="suggestions" class="suggestions-box"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="newPrice">New Price</label>
+                <input type="text" id="newPrice" placeholder="$0.00" />
+              </div>
+              <button id="updatePriceBtn">Update Feed Price</button>
+              <button type="submit">Delete Product</button>
+
+          
+                <h2>Feed Price Chart</h2>
+                <table id="priceTable">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Quantity</th>
+                      <th>Product</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Rows will be injected by JavaScript -->
+                  </tbody>
+                </table>
+          </div>
+      
+
+
+      <!-- Fuel Price Section -->
+      <div class="dashboard-section" id="fuel-price">
+
+        <hr style="margin: 30px 0; border: 1px solid #444;" />
+
+        <h2><i class="fas fa-gas-pump"></i> Today's Fuel Prices</h2>
+        <div class="price-grid">
+          <div class="price-card" data-type="Regular">
+            <i class="fas fa-car"></i>
+            <h3>Regular</h3>
+            <p>$2.899</p>
+          </div>
+          <div class="price-card" data-type="Mid-Grade">
+            <i class="fas fa-car-side"></i>
+            <h3>Mid-Grade</h3>
+            <p>$3.399</p>
+          </div>
+          <div class="price-card" data-type="Premium">
+            <i class="fas fa-car-alt"></i>
+            <h3>Premium</h3>
+            <p>$3.899</p>
+          </div>
+          <div class="price-card" data-type="Diesel (Off-Road)">
+            <i class="fas fa-tractor"></i>
+            <h3>Diesel (Off-Road)</h3>
+            <p>$2.899</p>
+          </div>
+          <div class="price-card" data-type="Diesel (On-Road)">
+            <i class="fas fa-truck"></i>
+            <h3>Diesel (On-Road)</h3>
+            <p>$3.399</p>
+          </div>
+        </div>
+
+        <h2><i class="fas fa-gas-pump"></i> Change Fuel Price</h2>
+        <div class="form-group">
+          <label>Fuel Type</label>
+          <input type="text" id="fuelTypeInput" placeholder="e.g., Regular, Diesel (Off-Road)" />
+        </div>
+        <div class="form-group">
+          <label>New Price</label>
+          <input type="text" id="newFuelPriceInput" placeholder="$0.00" />
+        </div>
+        <button id="updateFuelBtn">Update Fuel Price</button>
+
+        <div id="fuelMessage" class="dashboard-message" style="display: none;"></div>
+      </div>
+
+
+      <!-- Deli Price Section -->
+      <div class="dashboard-section" id="deli-price">
+              <section id="menu-management">
+                <h2><i class="fas fa-hamburger"></i>Menu Items Management</h2>
+                <!-- Add Item Form -->
+                <form id="addItemForm" class="card">
+                  <h3>Add New Item</h3>
+                  <label>Name: <input type="text" id="newName" required></label>
+                  <label>Price: <input type="number" id="newPrice" min="0" step="0.01" required></label>
+                  <label>Category: 
+                      <select id="newCategory" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Burger">Burger</option>
+                        <option value="Pizza">Pizza</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Weekend Items">Weekend Items</option>
+                      </select>
+                    </label>
+                  <label>Description: <input type="text" id="newDescription"></label>
+                  <label>Available: <input type="checkbox" id="newAvailable" checked></label>
+                  <button type="submit">Add Item</button>
+                </form>
+
+                <!-- Menu Items Table -->
+                <table id="menuTable" class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Category</th>
+                      <th>Description</th>
+                      <th>Available</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </section>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

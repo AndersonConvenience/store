@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anderson Convenience Store</title>
+   <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
+  <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./css/feed.css"/>
+  <link rel="stylesheet" href="./css/partials.css">
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="js/navbar.js" defer></script>
+  <script src="js/footer.js" defer></script>
+  
+  <script type="module" src="./js/feed.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+  </header>
+  <div class="container">
+    <h1>Anderson Convenience Store</h1> 
+    <h2>Feed Price Chart</h2>
+    <table id="priceTable">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Product</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be injected by JavaScript -->
+      </tbody>
+    </table>
+  </div>
+  <div id="footer-placeholder"></div>
+
+  
+
+
+</body>
+</html>

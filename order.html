@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anderson Convenience Store</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
+  <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
+  
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/order.css" />
+  <link rel="stylesheet" href="./css/partials.css" />
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="js/navbar.js" defer></script>
+  <script src="js/footer.js" defer></script>
+  <script type="module" src="js/order.js"></script>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="header">
+      <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+    </header>
+
+    <main class="main-content">
+      <section class="intro-section">
+        <h2>Anderson Convenience Store</h2>
+        <p>Your one-stop shop for snacks, drinks, and essentials. Order online and pick up in-store or have it delivered!</p>
+      </section>
+
+      <section class="container">
+        <div class="order-layout">
+          <form id="orderForm" aria-label="Place Your Order Form">
+            <h3>Place Your Order</h3>
+
+            <label for="item">Select Item:</label>
+            <select id="item" name="item" required aria-required="true" aria-describedby="itemHelp">
+              <option value="">-- Choose an item --</option>
+              <!-- JS will add <optgroup> by category and <option> for items -->
+            </select>
+
+            <small id="itemHelp" style="display:block; margin-bottom:1rem;">Choose your item to see customization options.</small>
+
+            <fieldset id="toppingsSection" style="display: none;">
+              <legend>Burger Toppings</legend>
+              <label><input type="checkbox" id="everythingToppings" name="everythingToppings" /> Everything</label><br>
+              <div id="burgerToppings" style="margin-left: 1rem;">
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Lettuce" /> Lettuce</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Tomato" /> Tomato</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Pickles" /> Pickles</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Onions" /> Onions</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Cheese" /> Cheese</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Mayo" /> Mayo</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Mustard" /> Mustard</label><br>
+                <label><input type="checkbox" class="topping" name="burgerToppings" value="Ketchup" /> Ketchup</label><br>
+              </div>
+            </fieldset>
+
+            <fieldset id="pizzaOptions" style="display: none; margin-top: 1rem;">
+              <legend>Pizza Options</legend>
+
+              <label><input type="checkbox" id="pizzaEverything" name="pizzaEverything" /> Everything</label><br>
+              <div id="pizzaToppingsList" style="margin-left: 1rem;">
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Pepperoni" /> Pepperoni</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Ham Balls" /> Ham Balls</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Sausages" /> Sausages</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Bacon" /> Bacon</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Banana Peppers" /> Banana Peppers</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Onions" /> Onions</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Mushroom" /> Mushroom</label><br>
+                <label><input type="checkbox" class="pizza-topping" name="pizzaToppings" value="Black Olives" /> Black Olives</label><br>
+              </div>
+            </fieldset>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required aria-required="true" /><br><br>
+
+            <label for="name">Name on Order:</label>
+            <input type="text" id="name" name="name" required aria-required="true" /><br><br>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required aria-required="true" /><br><br>
+
+            <label for="request">Additional Request:</label>
+            <input type="text" id="request" name="request" /><br><br>
+
+            <p class="alert-message">
+              ⚠️ If we are out of any item, we will call you to confirm before finalizing your order.
+            </p>
+
+            <button type="submit">Submit Order</button>
+          </form>
+
+          <aside id="productPreview" class="product-preview">
+            <!-- Product preview cards loaded via JS -->
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+</body>
+</html>

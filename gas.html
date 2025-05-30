@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anderson Convenience Store</title>
+   <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
+  <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
+
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/gas.css" />
+  <link rel="stylesheet" href="./css/partials.css" />
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="js/navbar.js" defer></script>
+  <script src="js/footer.js" defer></script>
+  <script type="module" src="js/gas.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+  </header>
+  <div class="container">
+    <section class="gas-prices">
+      <div class="gas-prices-container">
+        <!-- Fuel Price Section -->
+        <div class="dashboard-section" id="fuel-price">
+
+          <hr style="margin: 30px 0; border: 1px solid #444;" />
+
+          <h2><i class="fas fa-gas-pump"></i> Today's Fuel Prices</h2>
+          <div class="price-grid">
+            <div class="price-card" data-type="Regular">
+              <i class="fas fa-car"></i>
+              <h3>Regular</h3>
+              <p><!-- Price will be inserted here dynamically --></p>
+            </div>
+            <div class="price-card" data-type="Mid-Grade">
+              <i class="fas fa-car-side"></i>
+              <h3>Mid-Grade</h3>
+              <p></p>
+            </div>
+            <div class="price-card" data-type="Premium">
+              <i class="fas fa-car-alt"></i>
+              <h3>Premium</h3>
+              <p></p>
+            </div>
+            <div class="price-card" data-type="Diesel (Off-Road)">
+              <i class="fas fa-tractor"></i>
+              <h3>Diesel (Off-Road)</h3>
+              <p></p>
+            </div>
+            <div class="price-card" data-type="Diesel (On-Road)">
+              <i class="fas fa-truck"></i>
+              <h3>Diesel (On-Road)</h3>
+              <p></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
+</body>
+</html>

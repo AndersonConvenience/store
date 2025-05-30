@@ -1,0 +1,148 @@
+
+html, body {
+  height: 100%; /* Important for the page-container to fill the viewport */
+  margin: 0;
+}  
+/* Header and Navbar */
+.header {
+  background-color: #1e3a8a;
+  color: #fff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.logo a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.links {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: #facc15;
+}
+
+/* Buttons */
+.buttons .order-now-btn,
+.cart {
+  background-color: #facc15;
+  color: #1e3a8a;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-left: 20px;
+  transition: background 0.3s ease;
+  position: relative;
+  font-weight: bold;
+}
+
+.buttons .order-now-btn:hover,
+.cart:hover {
+  background-color: #eab308;
+}
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1e3a8a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: #facc15;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Navbar */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  height: 3px;
+  width: 25px;
+  background-color: #fff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  .menu-toggle {
+    display: flex;
+    
+  }
+
+  .links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    background-color: #1e3a8a;
+  }
+
+  .links li {
+    width: 100%;
+  }
+
+  .links a {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-top: 1px solid #fff;
+  }
+
+  .links.show {
+    display: flex;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .buttons .order-now-btn,
+  .cart {
+    margin-left: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+}

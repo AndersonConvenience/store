@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anderson Convenience Store</title>
+   <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
+  <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
+
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/menu.css"/>
+  <link rel="stylesheet" href="./css/partials.css" />
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="header">
+    <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+  </header>
+
+  <!-- Vue App -->
+  <div id="app" class="container">
+    <h1>Our Menu</h1>
+
+    <!-- Regular categories -->
+    <div v-for="(items, category) in regularCategories" :key="category">
+      <h2>{{ category }}</h2>
+      <div class="menu-container">
+        <div class="menu-item" v-for="item in items" :key="item.name">
+          <div class="price-tag">${{ item.price.toFixed(2) }}</div>
+          <img :src="getImage(item.name)" :alt="item.name" />
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-description">{{ item.description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BBQ Specials -->
+    <div class="weekend-menu" v-if="bbqItems.length > 0">
+      <h2>Saturday BBQ Specials</h2>
+      <p>We serve smoked Ribs and Chicken every Saturday…</p>
+      <p>Each plate comes with 2 sides: Baked Beans, Potato Salad, or Cole Slaw</p>
+      <div class="menu-container">
+        <div class="menu-item" v-for="item in bbqItems" :key="item.name">
+          <div class="price-tag">${{ item.price.toFixed(2) }}</div>
+          <img :src="getImage(item.name)" :alt="item.name" />
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-description">{{ item.description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Button -->
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="./order.html" class="order-button">Order Now</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Vue + Firebase -->
+  <script type="module">
+    import {
+      db,
+      collection,
+      getDocs
+    } from './js/firebase-config.js';
+
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
+    const app = createApp({
+      data() {
+        return {
+          menuItemsByCategory: {},
+        };
+      },
+      computed: {
+        regularCategories() {
+          const filtered = { ...this.menuItemsByCategory };
+          delete filtered["Weekend Items"];
+          return filtered;
+        },
+        bbqItems() {
+          return this.menuItemsByCategory["Weekend Items"] || [];
+        }
+      },
+      methods: {
+        getImage(name) {
+          const images = {
+            "Crispy Chicken Sandwich": "./pics/crispy.jpg",
+            "Spicy Chicken Sandwich": "./pics/spicy.jpg",
+            "Ham Burger": "./pics/ham.jpg",
+            "Personal Pizza": "./pics/pizza.jpg",
+            "Cheese Sticks": "./pics/cheese-sticks.jpg",
+            "Cheese Potatoes": "./pics/cheese-potatoes.jpg",
+            "Potato Wadges": "./pics/potato-wages.jpg",
+            "Fries": "./pics/fries.jpg",
+            "Corn Dog": "./pics/corndog.jpg",
+            "Shrimp Basket": "./pics/shrimp Basket.jpg",
+            "Chicken Fingers": "./pics/fingers.jpg",
+            "Spicy Chicken Bites": "./pics/Spicy Bites.jpg",
+            "Chicken Nuggets": "./pics/nuggets.jpg"
+          };
+          return images[name] || "./pics/default.jpg";
+        }
+      },
+      async created() {
+        const querySnapshot = await getDocs(collection(db, "menu"));
+        const categorizedItems = {};
+
+        querySnapshot.forEach(doc => {
+          const item = doc.data();
+          if (!categorizedItems[item.category]) {
+            categorizedItems[item.category] = [];
+          }
+          categorizedItems[item.category].push(item);
+        });
+
+        this.menuItemsByCategory = categorizedItems;
+      }
+    });
+
+    app.mount('#app');
+  </script>
+
+  <!-- Static JS -->
+  <script src="js/navbar.js" defer></script>
+  <script src="js/footer.js" defer></script>
+
+</body>
+</html>
