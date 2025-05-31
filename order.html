@@ -7,7 +7,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
   <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
   
-  <link rel="stylesheet" href="./css/index.css" />
   <link rel="stylesheet" href="./css/order.css" />
   <link rel="stylesheet" href="./css/partials.css" />
   <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
@@ -34,10 +33,10 @@
             <h3>Place Your Order</h3>
 
             <label for="item">Select Item:</label>
-            <select id="item" name="item" required aria-required="true" aria-describedby="itemHelp">
-              <option value="">-- Choose an item --</option>
-              <!-- JS will add <optgroup> by category and <option> for items -->
-            </select>
+           <select id="item" name="item" required aria-required="true" aria-describedby="itemHelp">
+            <option value="">-- Choose an item --</option>
+            <!-- JS will add <optgroup> by category and <option> for items -->
+          </select>
 
             <small id="itemHelp" style="display:block; margin-bottom:1rem;">Choose your item to see customization options.</small>
 
@@ -58,6 +57,7 @@
 
             <fieldset id="pizzaOptions" style="display: none; margin-top: 1rem;">
               <legend>Pizza Options</legend>
+              <small id="pizzaSizeHelp" style="display:block; margin-bottom:1rem;">Choose size before selecting toppings.</small>
 
               <label><input type="checkbox" id="pizzaEverything" name="pizzaEverything" /> Everything</label><br>
               <div id="pizzaToppingsList" style="margin-left: 1rem;">
@@ -75,11 +75,13 @@
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" min="1" required aria-required="true" /><br><br>
 
-            <label for="name">Name on Order:</label>
-            <input type="text" id="name" name="name" required aria-required="true" /><br><br>
+            <div id="customerInfoFields" style="display: none;">
+              <label for="name">Name on Order:</label>
+              <input type="text" id="name" name="name" /><br><br>
 
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required aria-required="true" /><br><br>
+              <label for="phone">Phone Number:</label>
+              <input type="tel" id="phone" name="phone" /><br><br>
+            </div>
 
             <label for="request">Additional Request:</label>
             <input type="text" id="request" name="request" /><br><br>

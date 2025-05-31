@@ -99,3 +99,20 @@ html, body {
 #confirm:hover {
   background-color: #158915;
 }
+#add-items {
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 15px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #95e0ee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-items:hover {
+  background-color: #02aae2;
+}

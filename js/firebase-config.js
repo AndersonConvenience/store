@@ -1,4 +1,3 @@
-// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getFirestore,
@@ -11,7 +10,8 @@ import {
   deleteDoc,
   query,
   onSnapshot,
-  where
+  where,
+  setDoc // ✅ ADD THIS!
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import {
@@ -22,23 +22,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBdld-tfYWCvuJj1hJVd5WtZ9El7PGShJo",
-  authDomain: "anderson-convenience-store.firebaseapp.com",
-  projectId: "anderson-convenience-store",
-  storageBucket: "anderson-convenience-store.appspot.com",
-  messagingSenderId: "443082558375",
-  appId: "1:443082558375:web:c5391ea3beda5be7864482",
-  measurementId: "G-PR6TDGXCQT"
+  apiKey: "AIzaSyAhorvdeFQ8zV_PMa7seemlyNT1ITygKJc",
+  authDomain: "anderson-convenience-sto-55978.firebaseapp.com",
+  projectId: "anderson-convenience-sto-55978",
+  storageBucket: "anderson-convenience-sto-55978.appspot.com",
+  messagingSenderId: "1085719794613",
+  appId: "1:1085719794613:web:992263d9f4c20efd3e3ffc",
+  measurementId: "G-RRK2W093RC"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app); // ✅ Add Firebase Authentication
+const auth = getAuth(app);
 
 export {
   db,
   getAuth,
-  auth, // ✅ Export the auth module
+  auth,
   doc,
   getDoc,
   getDocs,
@@ -51,5 +51,6 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   onSnapshot,
-  signOut
+  signOut,
+  setDoc // ✅ EXPORT IT!
 };

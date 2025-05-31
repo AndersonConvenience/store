@@ -23,7 +23,7 @@
       <button data-section="feed-price"><i class="fas fa-tractor"></i> Feed Price</button>
       <button data-section="fuel-price"><i class="fas fa-gas-pump"></i> Fuel Price</button>
       <button data-section="deli-price"><i class="fas fa-hamburger"></i> Deli Price</button>
-      
+      <button data-section="report"><i class="fas fa-file-alt"></i> View Report</button>
     </div>
 
     <!-- Dashboard Content -->
@@ -44,7 +44,9 @@
           <h1>All Orders</h1>
           <div id="ordersContainer">Loading orders...</div>
         </div>
-       
+        <div id="orderAlertOverlay" style="display:none;">
+            <div id="orderAlertBox"></div>
+          </div>
       </div>
 
      
@@ -144,8 +146,16 @@
         <h2><i class="fas fa-gas-pump"></i> Change Fuel Price</h2>
         <div class="form-group">
           <label>Fuel Type</label>
-          <input type="text" id="fuelTypeInput" placeholder="e.g., Regular, Diesel (Off-Road)" />
+          <input list="fuelTypes" id="fuelTypeInput" placeholder="e.g., Regular, Diesel (Off-Road)" />
+          <datalist id="fuelTypes">
+            <option value="Regular" />
+            <option value="Mid-Grade" />
+            <option value="Premium" />
+            <option value="Diesel (Off-Road)" />
+            <option value="Diesel (On-Road)" />
+          </datalist>
         </div>
+
         <div class="form-group">
           <label>New Price</label>
           <input type="text" id="newFuelPriceInput" placeholder="$0.00" />
@@ -195,7 +205,25 @@
                 </table>
               </section>
       </div>
-    </div>
+
+<!-- Report Section -->
+<div class="dashboard-section" id="report">
+  <h2><i class="fas fa-file-alt"></i> Monthly Report</h2>
+    <!-- Month Selector -->
+      <select id="monthSelect"></select>
+
+      <!-- Report Section -->
+      <div class="dashboard-section" id="report">
+        <h2><i class="fas fa-file-alt"></i> Monthly Report</h2>
+        <div id="Monthly reportSummary">
+          <p><strong>Order from</strong> <span id="orderDate">N/A</span></p>
+          <p><strong>Total Orders:</strong> <span id="totalOrders">0</span></p>
+          <p><strong>Total Price:</strong> $<span id="totalPrice">0.00</span></p>
+          <p>---------------------------------------------------------------------------</p>
+        </div>
+        <div id="monthlyOrdersList"></div>
+      </div>
+
   </div>
 </body>
 </html>

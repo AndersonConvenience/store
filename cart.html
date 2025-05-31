@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Anderson Convenience Store - Cart</title>
 
     <meta name="description" content="Review and confirm your order at Anderson Convenience Store." />
-    <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png" />
     <link rel="stylesheet" href="./css/index.css" />
     <link rel="stylesheet" href="./css/partials.css" />
     <link rel="stylesheet" href="./css/cart.css" />
@@ -38,6 +38,7 @@
 
           <button id="clear-cart" type="button">Clear Cart</button>
           <button id="confirm" type="button">Confirm Order</button>
+          <a href="./order.html" type="button" id="add-items">Add more Items</a>
         </section>
       </main>
 
@@ -101,6 +102,8 @@
     <script type="module">
       import { db, collection, addDoc } from './js/firebase-config.js';
 
+      const FOOD_TAX_RATE = 0.0801;
+
       document.getElementById('confirm').addEventListener('click', async () => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -111,10 +114,14 @@
 
         try {
           for (const item of cart) {
+            // Calculate price with tax per unit
+            const priceWithTaxPerUnit = item.price * (1 + FOOD_TAX_RATE);
+
             await addDoc(collection(db, 'orders'), {
               item: item.name,
               quantity: item.quantity,
-              price: item.price,
+              priceWithoutTax : item.price,
+              price: parseFloat(priceWithTaxPerUnit.toFixed(2)), // price per item including tax
               toppings: item.toppings || [],
               pizzaSize: item.pizzaSize || null,
               request: item.request || '',

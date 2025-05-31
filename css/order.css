@@ -9,7 +9,6 @@
   max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Introduction Section - matches the order-layout background */
@@ -225,7 +224,7 @@
     padding: 10px 15px;
   }
 
-  .product-preview {
+  .croduct-preview {
     margin: 0;
     width: 100%;
     max-width: 100%;
