@@ -103,6 +103,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     customerInfoFields.style.display = 'none';
   }
 
+  // Time-based button disable logic
+  const submitButton = form.querySelector('button[type="submit"]');
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
+  const currentTimeInMinutes = currentHour * 60 + currentMinutes;
+  const startTime = 8 * 60; // 8:00 AM
+  const endTime = 20 * 60; // 8:00 PM
+
+  if (currentTimeInMinutes < startTime || currentTimeInMinutes > endTime) {
+    submitButton.disabled = true;
+    submitButton.style.opacity = '0.5'; // Visually indicate it's disabled
+    const timeMessage = document.createElement('p');
+    timeMessage.className = 'alert-message';
+    timeMessage.textContent = '⚠️ Orders can only be placed between 8 AM and 8 PM.';
+    form.insertBefore(timeMessage, submitButton.parentElement);
+  }
+
   itemSelect.addEventListener('change', () => {
     const burgerItems = ["Crispy Chicken Sandwich", "Spicy Chicken Sandwich", "Ham Burger"];
     const pizzaItems = ["Personal Pizza", "Medium Pizza", "Large Pizza"];
@@ -144,6 +162,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    // Check current time
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinutes;
+    const startTime = 8 * 60; // 8:00 AM
+    const endTime = 20 * 60; // 8:00 PM
+
+    if (currentTimeInMinutes < startTime || currentTimeInMinutes > endTime) {
+      alert('Orders can only be placed between 8 AM and 8 PM.');
+      return;
+    }
 
     if (customerInfoFields.style.display === 'none') {
       document.getElementById('name').required = false;
@@ -221,7 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         request,
         nameInput: name,
         phoneInput: phone,
-        category  // ✅ Added category field!
+        category
       });
     }
 

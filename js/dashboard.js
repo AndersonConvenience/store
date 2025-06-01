@@ -295,8 +295,38 @@ const productInput = document.getElementById("productName");
 const priceInput = document.getElementById("newPrice");
 const updatePriceBtn = document.getElementById("updatePriceBtn");
 const suggestionsBox = document.getElementById("suggestions");
+const addFeedForm = document.getElementById("addFeedForm");
+const deleteButton = document.getElementById("deleteFeedBtn"); // Updated selector for clarity
 
 let feedData = [];
+
+// Function to display messages for add feed form
+function showAddFeedMessage(message, isError = false) {
+  const messageEl = document.getElementById('addFeedMessage');
+  messageEl.textContent = message;
+  messageEl.style.color = isError ? 'red' : 'green';
+  messageEl.style.display = 'block';
+  // Hide message after 2 seconds
+  setTimeout(() => {
+    messageEl.style.display = 'none';
+  }, 2000);
+}
+
+// Function to populate the price table
+function updatePriceTable() {
+  const tbody = document.querySelector('#priceTable tbody');
+  tbody.innerHTML = ''; // Clear existing rows
+  feedData.forEach(item => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${item.category}</td>
+      <td>${item.quantity}</td>
+      <td>${item.product}</td>
+      <td>${item.price}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
 
 // Fetch feed data from Firestore on load
 async function fetchFeedData() {
@@ -305,6 +335,7 @@ async function fetchFeedData() {
   querySnapshot.forEach(docSnap => {
     feedData.push({ id: docSnap.id, ...docSnap.data() });
   });
+  updatePriceTable(); // Update table after fetching
 }
 
 fetchFeedData();
@@ -338,7 +369,7 @@ updatePriceBtn.addEventListener("click", async () => {
     const docRef = doc(db, "feedPrices", item.id);
     await updateDoc(docRef, { price: newPrice });
     alert(`Price for "${productName}" updated to ${newPrice}.`);
-    await fetchFeedData();
+    await fetchFeedData(); // Refresh local list and table
   } catch (error) {
     console.error("Error updating price:", error);
     alert("Failed to update price.");
@@ -379,8 +410,8 @@ document.addEventListener("click", e => {
     suggestionsBox.innerHTML = "";
   }
 });
-//Add new feed items
 
+// Add new feed items
 addFeedForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -407,6 +438,12 @@ addFeedForm.addEventListener('submit', async (e) => {
 
   if (!price.startsWith("$")) price = "$" + price;
 
+  // Check for duplicate product name (case-insensitive)
+  if (feedData.some(item => item.product.toLowerCase() === product.toLowerCase())) {
+    showAddFeedMessage(`Product "${product}" already exists.`, true);
+    return;
+  }
+
   const newItem = {
     category,
     quantity,
@@ -419,50 +456,58 @@ addFeedForm.addEventListener('submit', async (e) => {
     await addDoc(collection(db, "feedPrices"), newItem);
     showAddFeedMessage(`Added "${product}" successfully!`, false);
     addFeedForm.reset();
-    fetchFeedData(); // Refresh local list
+    await fetchFeedData(); // Refresh local list and table
+    // Reload page with #feed-price hash after 2 seconds to stay on the same section
+    setTimeout(() => {
+      window.location.href = window.location.pathname + '#feed-price';
+    }, 2000);
   } catch (error) {
     console.error("Error adding feed item:", error);
     showAddFeedMessage("Error adding product.", true);
   }
 });
 
-//feed delete section:
-
-
-const deleteButton = document.querySelector('#updatePriceBtn + button[type="submit"]');
-
+// Feed delete section
 deleteButton.addEventListener('click', async (e) => {
   e.preventDefault();
 
   const productName = document.getElementById('productName').value.trim();
   if (!productName) {
-    alert("Please enter a product name to delete.");
+    showAddFeedMessage("Please enter a product name to delete.", true);
     return;
   }
 
   try {
     const feedRef = collection(db, "feedPrices");
-    const q = query(feedRef, where("product", "==", productName));
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(feedRef); // Get all documents
+    const matchingDocs = querySnapshot.docs.filter(doc => 
+      doc.data().product.toLowerCase() === productName.toLowerCase()
+    );
 
-    if (querySnapshot.empty) {
-      alert(`No product found with name "${productName}".`);
+    if (matchingDocs.length === 0) {
+      showAddFeedMessage(`No product found with name "${productName}".`, true);
       return;
     }
 
     let deletedCount = 0;
-    for (const docSnap of querySnapshot.docs) {
+    for (const docSnap of matchingDocs) {
       await deleteDoc(docSnap.ref);
       deletedCount++;
     }
 
-    alert(`Deleted ${deletedCount} product(s) named "${productName}".`);
+    showAddFeedMessage(`Deleted ${deletedCount} product(s) named "${productName}".`, false);
     document.getElementById('productName').value = '';
     document.getElementById('newPrice').value = '';
-    fetchFeedData(); // Refresh UI if needed
+    await fetchFeedData(); // Refresh local list and table
   } catch (error) {
     console.error("Error deleting product:", error);
-    alert("Error deleting product. Check console for details.");
+    let message = "Error deleting product.";
+    if (error.code === 'permission-denied') {
+      message = "You don't have permission to delete this product.";
+    } else if (error.code === 'unavailable') {
+      message = "Network error. Please check your connection.";
+    }
+    showAddFeedMessage(message, true);
   }
 });
 
