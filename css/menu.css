@@ -3,11 +3,25 @@ body {
   background-color: #f5f5f5;
   margin: 0;
   padding: 20px;
+  background: aliceblue;
+
+}
+.menuHead {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 40px;
+ 
 }
 
-h1 {
+h2 {
   text-align: center;
   margin-bottom: 40px;
+  color: #333;
+   background-color:#ddd;
+}
+.container{
+  background: aliceblue;
 }
 
 /* Menu Grid Layout */
@@ -21,6 +35,7 @@ h1 {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  
 }
 
 /* Menu Item Card */
@@ -145,7 +160,32 @@ h1 {
 .order-button:hover {
   background-color: #0056b3;
 }
+/* flyer Now Button */
+.flyer-button {
+  display: inline-block;
+  background-color: #11dc65;
+  color: white;
+  padding: 1rem 2rem;
+  margin-left: 80px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  transition: background-color 0.3s ease;
+}
 
+.flyer-button:hover {
+  background-color: #1f5018;
+  margin-right: auto;
+}
+
+.myButtons {
+  display: flex;
+  margin-left: auto;
+  justify-content: center; /* Centers the buttons horizontally within the flex container */
+  align-items: center; /* Centers the buttons vertically within the flex container */
+  gap: 10px; /* Optional: Adds spacing between the two buttons */
+}
 /* Responsive Tweaks for Mobile */
 @media (max-width: 600px) {
   body {

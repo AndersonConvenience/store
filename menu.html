@@ -21,7 +21,7 @@
 
   <!-- Vue App -->
   <div id="app" class="container">
-    <h1>Our Menu</h1>
+    <h1 class="menuHead">Our Menu</h1>
 
     <!-- Regular categories -->
     <div v-for="(items, category) in regularCategories" :key="category">
@@ -52,8 +52,13 @@
     </div>
 
     <!-- Order Button -->
+     <div class="myButtons">
     <div style="text-align:center; margin-top:2rem;">
       <a href="./order.html" class="order-button">Order Now</a>
+    </div>
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="./Store Flyer.pdf" class="flyer-button" target="_blank">View Store Flyer</a>
+    </div>
     </div>
   </div>
 
@@ -93,6 +98,8 @@
             "Spicy Chicken Sandwich": "./pics/spicy.jpg",
             "Ham Burger": "./pics/ham.jpg",
             "Personal Pizza": "./pics/pizza.jpg",
+            "Medium Pizza": "./pics/med.jpg",
+            "Large Pizza": "./pics/large.jpg",
             "Cheese Sticks": "./pics/cheese-sticks.jpg",
             "Cheese Potatoes": "./pics/cheese-potatoes.jpg",
             "Potato Wadges": "./pics/potato-wages.jpg",

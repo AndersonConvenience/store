@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anderson Convenience Store – Order Confirmation</title>
+  <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
+  <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/confirmation.css" />
+  <link rel="stylesheet" href="./css/partials.css" />
+  <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="js/footer.js" defer></script>
+  <script src="js/navbar.js" defer></script>
+</head>
+
+<body>
+  <header class="header">
+    <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+  </header>
+
+  <main class="container">
+    <h1>Order Confirmation</h1>
+    <section>
+      <p id="order-status">Your order will be ready to pick up shortly!</p>
+      <p>We are unable to provide online payment services at the moment, but we do accept card or cash at the store.</p>
+
+      <video id="animation-video" autoplay muted loop playsinline>
+        <source src="./pics/thankyou.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </section>
+  </main>
+
+  <script>
+    const DURATION = {
+      pizza: 25 * 60 * 1000,   // 25 minutes
+      burger: 20 * 60 * 1000,  // 20 minutes
+      snacks: 15 * 60 * 1000,  // 15 minutes
+      default: 15 * 60 * 1000  // default 15 minutes
+    };
+
+    // Load cart safely from localStorage
+    let userCart = [];
+    try {
+      userCart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch(e) {
+      console.error('Error parsing cart from localStorage', e);
+    }
+
+    // Extract unique categories (lowercase)
+    const categories = [...new Set(userCart.map(item => (item.category || 'other').toLowerCase()))];
+
+    // Determine duration and video based on category priority
+    let playDuration = DURATION.default;
+    let initialVideo = './pics/food.mp4';
+    let categoryLabel = 'order';
+
+    if (categories.includes('pizza')) {
+      playDuration = DURATION.pizza;
+      initialVideo = './pics/pizza.mp4';
+      categoryLabel = 'pizza';
+    } else if (categories.includes('burger')) {
+      playDuration = DURATION.burger;
+      initialVideo = './pics/burger.mp4';
+      categoryLabel = 'burger';
+    } else if (categories.includes('snacks')) {
+      playDuration = DURATION.snacks;
+      initialVideo = './pics/snacks.mp4';
+      categoryLabel = 'snacks';
+    }
+
+    const video = document.getElementById('animation-video');
+    video.src = initialVideo;
+
+    // Play video with error handling for power-saving pauses
+    video.play().catch(error => {
+      console.warn('Video playback was interrupted or blocked:', error);
+    });
+
+    const orderStatus = document.getElementById('order-status');
+    orderStatus.textContent = `Your ${categoryLabel} order will be ready in approximately ${Math.floor(playDuration / 60000)} minutes.`;
+
+    setTimeout(() => {
+      video.src = './pics/completed.mp4';
+      video.loop = true;
+      video.load();
+      video.play().catch(error => {
+        console.warn('Video playback was interrupted or blocked:', error);
+      });
+
+      orderStatus.textContent = `Your ${categoryLabel} order is now ready for pickup!`;
+
+      // Clear cart after order is confirmed
+      localStorage.removeItem('cart');
+    }, playDuration);
+  </script>
+
+  <div id="footer-placeholder"></div>
+</body>
+</html>

@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Store menu data locally for quick access later
   localStorage.setItem('menuData', JSON.stringify(menuData));
+  localStorage.setItem('categories', JSON.stringify(categories));
 
   // Helper function to get image URL based on item name
   function getImage(name) {
@@ -69,12 +70,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Generate product preview cards dynamically
-  productPreview.innerHTML = ''; // Clear existing
+  productPreview.innerHTML = '';
   menuData.forEach(item => {
     const previewItem = document.createElement('div');
     previewItem.classList.add('preview-item');
     previewItem.id = `preview-${item.name.trim().replace(/\s+/g, '-')}`;
-    previewItem.style.display = 'none'; // Hide by default
+    previewItem.style.display = 'none';
     previewItem.style.textAlign = 'center';
     previewItem.style.marginBottom = '1rem';
 
@@ -93,10 +94,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     productPreview.appendChild(previewItem);
   });
 
-  // Hide preview container initially
   productPreview.style.display = 'none';
 
-  // Show or hide customer info fields depending on cart content (runs on page load)
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   if (cart.length === 0) {
     customerInfoFields.style.display = 'block';
@@ -104,18 +103,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     customerInfoFields.style.display = 'none';
   }
 
-  // Event: When item changes, show/hide toppings and preview
   itemSelect.addEventListener('change', () => {
     const burgerItems = ["Crispy Chicken Sandwich", "Spicy Chicken Sandwich", "Ham Burger"];
     const pizzaItems = ["Personal Pizza", "Medium Pizza", "Large Pizza"];
     const selectedItem = itemSelect.value;
 
-    // Show/hide burger toppings
     const isBurger = burgerItems.includes(selectedItem);
     toppingsSection.style.display = isBurger ? 'block' : 'none';
     if (!isBurger) everythingToppings.checked = false;
 
-    // Show/hide pizza options
     const isPizza = pizzaItems.includes(selectedItem);
     pizzaOptions.style.display = isPizza ? 'block' : 'none';
     if (!isPizza) {
@@ -123,7 +119,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       pizzaToppings.forEach(cb => cb.checked = false);
     }
 
-    // Show/hide product preview
     const previewId = `preview-${selectedItem.trim().replace(/\s+/g, '-')}`;
     document.querySelectorAll('.preview-item').forEach(el => el.style.display = 'none');
     if (selectedItem) {
@@ -139,7 +134,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Event: Everything toppings checkboxes toggle all individual toppings
   everythingToppings.addEventListener('change', () => {
     burgerToppings.forEach(cb => cb.checked = everythingToppings.checked);
   });
@@ -148,44 +142,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     pizzaToppings.forEach(cb => cb.checked = pizzaEverything.checked);
   });
 
-
-  // Form submit: validate and save order to localStorage cart
   form.addEventListener('submit', (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Dynamically set required attribute based on visibility
-  if (customerInfoFields.style.display === 'none') {
-    document.getElementById('name').required = false;
-    document.getElementById('phone').required = false;
-  } else {
-    document.getElementById('name').required = true;
-    document.getElementById('phone').required = true;
-  }
+    if (customerInfoFields.style.display === 'none') {
+      document.getElementById('name').required = false;
+      document.getElementById('phone').required = false;
+    } else {
+      document.getElementById('name').required = true;
+      document.getElementById('phone').required = true;
+    }
 
-  const item = itemSelect.value;
-  const quantity = parseInt(quantityInput.value);
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const request = document.getElementById('request').value.trim();
+    const item = itemSelect.value;
+    const quantity = parseInt(quantityInput.value);
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const request = document.getElementById('request').value.trim();
 
-  // Validate required fields based on current state
-  if (!item || !quantity || (customerInfoFields.style.display !== 'none' && (!name || !phone))) {
-    alert('Please fill in all required fields.');
-    return;
-  }
+    if (!item || !quantity || (customerInfoFields.style.display !== 'none' && (!name || !phone))) {
+      alert('Please fill in all required fields.');
+      return;
+    }
 
     const selectedPizzaToppings = [...document.querySelectorAll('.pizza-topping:checked')];
     const burgerToppingsChecked = [...document.querySelectorAll('.topping:checked')];
 
-    // Determine price and description
     let itemDescription = item;
     let price = 0;
 
-    // Load menuData from localStorage
     const storedMenuData = JSON.parse(localStorage.getItem('menuData')) || [];
+    const found = storedMenuData.find(i => i.name === item);
+    const category = found ? found.category : "Unknown";
 
     if (["Personal Pizza", "Medium Pizza", "Large Pizza"].includes(item)) {
-      // Pizza price calculation
       let pizzaSize = "";
       if (item === "Personal Pizza") pizzaSize = "Small";
       else if (item === "Medium Pizza") pizzaSize = "Medium";
@@ -202,8 +191,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       price = pizzaSize === "Small" ? basePrice + (0.50 * toppingCount) : basePrice + (1.00 * toppingCount);
       itemDescription = `Pizza (${pizzaSize})`;
     } else {
-      // Other items
-      const found = storedMenuData.find(i => i.name === item);
       if (!found) {
         alert('Item price not found. Try reloading the page.');
         return;
@@ -214,10 +201,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const burgerToppingsValues = burgerToppingsChecked.map(cb => cb.value);
     const pizzaToppingsValues = selectedPizzaToppings.map(cb => cb.value);
 
-    // Load existing cart or create new
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Check if same item with same toppings already exists to increment quantity
     const existingItem = cart.find(i =>
       i.name === itemDescription &&
       JSON.stringify(i.toppings) === JSON.stringify(
@@ -236,7 +220,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         pizzaSize: itemDescription.startsWith("Pizza") ? itemDescription.match(/\(([^)]+)\)/)[1] : null,
         request,
         nameInput: name,
-        phoneInput: phone
+        phoneInput: phone,
+        category  // ✅ Added category field!
       });
     }
 
@@ -245,5 +230,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert(`${quantity} x ${itemDescription} added to cart.`);
     window.location.href = 'cart.html';
   });
-
 });

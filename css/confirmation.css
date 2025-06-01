@@ -1,0 +1,60 @@
+/* confirmation.css */
+
+html, body {
+ height: 100%;
+  margin: 0;
+  padding: 0;
+  background: aliceblue;
+}
+
+.header {
+  background-color: var(--header-background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+ display: flex;
+  flex-direction: column;
+  color: black;
+  background: aliceblue;
+  min-height: 100vh;
+  box-sizing: border-box;
+  text-align: center;
+  flex: 1;
+}
+
+section {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+video {
+    border-radius: 8px;
+      margin-left: 10px;
+      text-align: center;
+      margin-top: 1rem;
+      max-width: 50%;
+      height: auto;
+    }
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+}

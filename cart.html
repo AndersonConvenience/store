@@ -1,144 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Anderson Convenience Store - Cart</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anderson Convenience Store - Cart</title>
+<meta name="description" content="Review and confirm your order at Anderson Convenience Store." />
+<link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png" />
+<link rel="stylesheet" href="./css/index.css" />
+<link rel="stylesheet" href="./css/partials.css" />
+<link rel="stylesheet" href="./css/cart.css" />
+<script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="js/navbar.js" defer></script>
+<script src="js/footer.js" defer></script>
+</head>
 
-    <meta name="description" content="Review and confirm your order at Anderson Convenience Store." />
-    <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png" />
-    <link rel="stylesheet" href="./css/index.css" />
-    <link rel="stylesheet" href="./css/partials.css" />
-    <link rel="stylesheet" href="./css/cart.css" />
-    <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="js/navbar.js" defer></script>
-    <script src="js/footer.js" defer></script>
-  </head>
-  <body>
-    <div class="page-wrapper">
-      <header class="header">
-        <div id="navbar-placeholder" aria-label="Site Navigation"></div>
-      </header>
+<body>
+<div class="page-wrapper">
+  <header class="header">
+    <div id="navbar-placeholder" aria-label="Site Navigation"></div>
+  </header>
 
-      <main class="main-content">
-        <section class="items-container">
-          <div class="cart-header cart-row">
-            <div class="cart-item-name">Item</div>
-            <div class="cart-item-quantity">Quantity</div>
-            <div class="cart-item-price">Price</div>
-          </div>
-          <div id="cart-items"></div>
+  <main class="main-content">
+    <section class="items-container">
+      <div class="cart-header cart-row">
+        <div class="cart-item-name">Item</div>
+        <div class="cart-item-quantity">Quantity</div>
+        <div class="cart-item-price">Price</div>
+      </div>
+      <div id="cart-items"></div>
 
-          <div class="cart-summary">
-            <div id="cart-subtotal" class="cart-total-price">Subtotal: $0.00</div>
-            <div id="cart-tax" class="cart-total-price">Tax: $0.00</div>
-            <div id="cart-final-total" class="cart-total-price">Total: $0.00</div>
-          </div>
+      <div class="cart-summary">
+        <div id="cart-subtotal" class="cart-total-price">Subtotal: $0.00</div>
+        <div id="cart-tax" class="cart-total-price">Tax: $0.00</div>
+        <div id="cart-final-total" class="cart-total-price">Total: $0.00</div>
+      </div>
 
-          <button id="clear-cart" type="button">Clear Cart</button>
-          <button id="confirm" type="button">Confirm Order</button>
-          <a href="./order.html" type="button" id="add-items">Add more Items</a>
-        </section>
-      </main>
+      <button id="clear-cart" type="button">Clear Cart</button>
+      <button id="confirm" type="button">Confirm Order</button>
+      <a href="./order.html" type="button" id="add-items">Add more Items</a>
+    </section>
+  </main>
 
-      <div id="footer-placeholder"></div>
-    </div>
+  <div id="footer-placeholder"></div>
+</div>
 
-    <script>
-      const FOOD_TAX_RATE = 0.0801;
+<script>
+const FOOD_TAX_RATE = 0.0801;
 
-      document.getElementById('clear-cart').addEventListener('click', () => {
-        localStorage.removeItem('cart');
-        location.reload();
+document.getElementById('clear-cart').addEventListener('click', () => {
+  localStorage.removeItem('cart');
+  location.reload();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const cartContainer = document.getElementById('cart-items');
+  const subtotalElement = document.getElementById('cart-subtotal');
+  const taxElement = document.getElementById('cart-tax');
+  const finalTotalElement = document.getElementById('cart-final-total');
+
+  function renderCart() {
+    cartContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+      subtotalElement.textContent = 'Subtotal: $0.00';
+      taxElement.textContent = 'Tax: $0.00';
+      finalTotalElement.textContent = 'Total: $0.00';
+      return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach(item => {
+      const itemLineTotal = item.quantity * item.price;
+      subtotal += itemLineTotal;
+
+      const div = document.createElement('div');
+      div.classList.add('cart-row');
+      div.innerHTML = `
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-quantity">@ ${item.quantity}</div>
+        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+      `;
+      cartContainer.appendChild(div);
+    });
+
+    const taxAmount = subtotal * FOOD_TAX_RATE;
+    const totalWithTax = subtotal + taxAmount;
+
+    subtotalElement.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
+    taxElement.textContent = `Tax: $${taxAmount.toFixed(2)}`;
+    finalTotalElement.textContent = `Total: $${totalWithTax.toFixed(2)}`;
+  }
+
+  renderCart();
+});
+</script>
+
+<script type="module">
+import { db, collection, addDoc } from './js/firebase-config.js';
+
+const FOOD_TAX_RATE = 0.0801;
+
+document.getElementById('confirm').addEventListener('click', async () => {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  if (cart.length === 0) {
+    alert('Your cart is empty.');
+    return;
+  }
+
+  try {
+    const menuData = JSON.parse(localStorage.getItem('menuData')) || [];
+    const orderedCategoriesSet = new Set();
+
+    for (const item of cart) {
+      const priceWithTaxPerUnit = item.price * (1 + FOOD_TAX_RATE);
+
+      // Determine the category for this item using menuData
+      const foundMenuItem = menuData.find(i => i.name === item.name);
+      const itemCategory = foundMenuItem ? foundMenuItem.category : 'Other';
+      orderedCategoriesSet.add(itemCategory.toLowerCase());
+
+      // Save order to Firestore
+      await addDoc(collection(db, 'orders'), {
+        item: item.name,
+        quantity: item.quantity,
+        category: itemCategory,
+        priceWithoutTax: item.price,
+        price: parseFloat(priceWithTaxPerUnit.toFixed(2)),
+        toppings: item.toppings || [],
+        pizzaSize: item.pizzaSize || null,
+        request: item.request || '',
+        name: item.nameInput || '',
+        phone: item.phoneInput || '',
+        createdAt: new Date().toISOString()
       });
+    }
 
-      document.addEventListener('DOMContentLoaded', () => {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartContainer = document.getElementById('cart-items');
-        const subtotalElement = document.getElementById('cart-subtotal');
-        const taxElement = document.getElementById('cart-tax');
-        const finalTotalElement = document.getElementById('cart-final-total');
+    // Save ordered categories to sessionStorage
+    const orderedCategories = Array.from(orderedCategoriesSet);
+    sessionStorage.setItem('orderedCategories', JSON.stringify(orderedCategories));
 
-        function renderCart() {
-          cartContainer.innerHTML = '';
-
-          if (cart.length === 0) {
-            cartContainer.innerHTML = '<p>Your cart is empty.</p>';
-            subtotalElement.textContent = 'Subtotal: $0.00';
-            taxElement.textContent = 'Tax: $0.00';
-            finalTotalElement.textContent = 'Total: $0.00';
-            return;
-          }
-
-          let subtotal = 0;
-
-          cart.forEach(item => {
-            const itemLineTotal = item.quantity * item.price;
-            subtotal += itemLineTotal;
-
-            const div = document.createElement('div');
-            div.classList.add('cart-row');
-            div.innerHTML = `
-              <div class="cart-item-name">${item.name}</div>
-              <div class="cart-item-quantity">@ ${item.quantity}</div>
-              <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-            `;
-            cartContainer.appendChild(div);
-          });
-
-          const taxAmount = subtotal * FOOD_TAX_RATE;
-          const totalWithTax = subtotal + taxAmount;
-
-          subtotalElement.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
-          taxElement.textContent = `Tax: $${taxAmount.toFixed(2)}`;
-          finalTotalElement.textContent = `Total: $${totalWithTax.toFixed(2)}`;
-        }
-
-        renderCart();
-      });
-    </script>
-
-    <script type="module">
-      import { db, collection, addDoc } from './js/firebase-config.js';
-
-      const FOOD_TAX_RATE = 0.0801;
-
-      document.getElementById('confirm').addEventListener('click', async () => {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        if (cart.length === 0) {
-          alert('Your cart is empty.');
-          return;
-        }
-
-        try {
-          for (const item of cart) {
-            // Calculate price with tax per unit
-            const priceWithTaxPerUnit = item.price * (1 + FOOD_TAX_RATE);
-
-            await addDoc(collection(db, 'orders'), {
-              item: item.name,
-              quantity: item.quantity,
-              priceWithoutTax : item.price,
-              price: parseFloat(priceWithTaxPerUnit.toFixed(2)), // price per item including tax
-              toppings: item.toppings || [],
-              pizzaSize: item.pizzaSize || null,
-              request: item.request || '',
-              name: item.nameInput || '',
-              phone: item.phoneInput || '',
-              createdAt: new Date().toISOString()
-            });
-          }
-
-          alert('Order confirmed and submitted successfully!');
-          localStorage.removeItem('cart');
-          location.reload();
-        } catch (error) {
-          console.error('Error submitting order:', error);
-          alert('Something went wrong while submitting your order.');
-        }
-      });
-    </script>
-  </body>
+    alert('Order confirmed and submitted successfully!');
+    localStorage.removeItem('cart');
+    window.location.href = './confirmation.html';
+  } catch (error) {
+    console.error('Error submitting order:', error);
+    alert('Something went wrong while submitting your order.');
+  }
+});
+</script>
+</body>
 </html>
