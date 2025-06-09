@@ -43,8 +43,8 @@
       });
     });
 
-    // newOrder.js
-        // Get references to DOM elements
+// New Order Section
+// Get references to DOM elements
 const ordersContainer = document.getElementById('ordersContainer');
 const notificationSound = document.getElementById('notificationSound');
 notificationSound.loop = true;
@@ -57,7 +57,7 @@ overlay.style.cssText = `
   top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.6);
   display: none;
-  color:black;
+  color: black;
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -75,12 +75,22 @@ alertBox.style.cssText = `
 overlay.appendChild(alertBox);
 document.body.appendChild(overlay);
 
-// Unlock sound playback on first user interaction
-document.addEventListener('click', () => {
+// Create "Enable Sound" button
+const enableSoundBtn = document.createElement('button');
+enableSoundBtn.textContent = 'Enable Sound';
+enableSoundBtn.style.cssText = `
+  position: fixed; top: 10px; right: 10px; z-index: 2000;
+  padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px;
+`;
+document.body.appendChild(enableSoundBtn);
+
+// Unlock sound playback on user click
+enableSoundBtn.addEventListener('click', () => {
   notificationSound.play().then(() => {
     notificationSound.pause();
-  }).catch(err => console.warn('Cannot autoplay sound:', err));
-}, { once: true });
+    enableSoundBtn.style.display = 'none';
+  }).catch(err => console.warn('Cannot autoplay:', err));
+});
 
 // Listen for new orders and update dashboard
 function listenForOrders() {
@@ -94,10 +104,8 @@ function listenForOrders() {
       return;
     }
 
-    // Always display all active orders
     displayAllOrders(snapshot.docs);
 
-    // If there’s a new order (added), show the alert
     snapshot.docChanges().forEach(change => {
       if (change.type === 'added') {
         const order = change.doc.data();
@@ -117,17 +125,15 @@ function showOrderNotification(order, orderId) {
     <p>Item: ${order.item || 'N/A'}</p>
     <button id="confirmBtn">OK</button>
   `;
-
   overlay.style.display = 'flex';
 
-  // Use addEventListener for the confirm button
   const confirmBtn = document.getElementById('confirmBtn');
-  confirmBtn.replaceWith(confirmBtn.cloneNode(true)); // remove old listeners
-  document.getElementById('confirmBtn').addEventListener('click', () => {
+  confirmBtn.onclick = () => {
     notificationSound.pause();
     notificationSound.currentTime = 0;
     overlay.style.display = 'none';
-  });
+  };
+  confirmBtn.focus();
 }
 
 // Display ALL orders in the dashboard
@@ -172,6 +178,7 @@ function displayAllOrders(orderDocs) {
 
 // Start listening for orders
 listenForOrders();
+
 
 
   // js/gas-prices.js
