@@ -1,6 +1,5 @@
  .order-notice-box {
   max-width: 600px;
-  min-height: 53vh;
   margin: 40px auto;
   padding: 25px;
   background: #fff4e5;
@@ -31,4 +30,9 @@
   color: #c62828;
   text-decoration: underline;
   font-size: 1.35rem;
+}
+.lottie-container {
+    width: 400px;
+    height: 400px;
+    margin: 0 auto 15px;
 }
