@@ -1,0 +1,34 @@
+ .order-notice-box {
+  max-width: 600px;
+  min-height: 53vh;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff4e5;
+  border: 2px solid #ffb74d;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-notice-box h2 {
+  margin-bottom: 15px;
+  color: #e65100;
+  font-size: 1.8rem;
+}
+
+.order-notice-box p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.order-call-highlight {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #c62828;
+}
+
+.order-call-highlight a {
+  color: #c62828;
+  text-decoration: underline;
+  font-size: 1.35rem;
+}
