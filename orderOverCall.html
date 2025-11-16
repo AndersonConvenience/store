@@ -6,7 +6,6 @@
   <title>Anderson Convenience Store</title>
   <link rel="icon" type="image/png" sizes="32x32" href="./pics/favicon.png">
   <meta name="description" content="Anderson Convenience Store offers gas, groceries, hardware, feed, and everyday essentials in Anderson, AL." />
-
   <link rel="stylesheet" href="./css/orderOverCall.css" />
   <link rel="stylesheet" href="./css/partials.css" />
   <script src="https://kit.fontawesome.com/3b8f9e8c33.js" crossorigin="anonymous"></script>
@@ -14,7 +13,11 @@
   <script src="js/navbar.js" defer></script>
   <script src="js/footer.js" defer></script>
   <script type="module" src="js/order.js"></script>
+
+  <!-- Lottie Player -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
 </head>
+
 <body>
   <div class="page-wrapper">
     <header class="header">
@@ -22,33 +25,46 @@
     </header>
 
     <main class="main-content">
-        <section class="container">
-            <section class="container">
-                <div class="order-notice-box">
-                    <h2>Online Ordering Not Available</h2>
+      <section class="container">
 
-                    <p>
-                    Thank you for choosing Anderson Convenience Store!  
-                    Online orders are not accepted at this moment.
-                    </p>
+        <div class="order-notice-box">
+          <h2>Online Ordering Not Available</h2>
+          <!-- Lottie Animation -->
+          <div class="lottie-container" id="paymentFailed"></div>
 
-                    <p class="order-call-highlight">
-                    Please call us to place your order:<br>
-                    <a href="tel:2562477553">256-247-7553</a>
-                    </p>
+          <p>
+            Thank you for choosing Anderson Convenience Store!  
+            Online orders are not accepted at this moment.
+          </p>
 
-                    <p>
-                    Or visit us at:<br>
-                    <strong>7230 HWY 207, Anderson, AL 35610</strong>
-                    </p>
-                </div>
-            </section>
+          <p class="order-call-highlight">
+            Please call us to place your order:<br>
+            <a href="tel:2562477553">256-247-7553</a>
+          </p>
 
-        </section>
+          <p>
+            Or visit us at:<br>
+            <strong>7230 HWY 207, Anderson, AL 35610</strong>
+          </p>
+
+        </div>
+
+      </section>
     </main>
     
-   <div id="footer-placeholder"></div>
-   </div>
-</body>
+    <div id="footer-placeholder"></div>
+  </div>
 
-</html> 
+  <!-- Lottie Animation Loader -->
+  <script>
+    lottie.loadAnimation({
+      container: document.getElementById('paymentFailed'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: './js/PaymentFailed.json'  // your animation file
+    });
+  </script>
+
+</body>
+</html>
